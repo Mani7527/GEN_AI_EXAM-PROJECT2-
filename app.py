@@ -28,8 +28,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Premium Custom Styling
-PREMIUM_CSS = """
+# Base CSS (Fonts & Core Components)
+BASE_CSS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -39,44 +39,22 @@ PREMIUM_CSS = """
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    
-    .stApp {
-        background: #0b1120;
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(14, 116, 144, 0.18) 0px, transparent 50%);
-        color: #f1f5f9;
-    }
 
     /* Top Hero Banner */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
-        border: 1px solid rgba(148, 163, 184, 0.15);
         border-radius: 18px;
-        padding: 32px 36px;
+        padding: 30px 34px;
         margin-bottom: 24px;
-        backdrop-filter: blur(16px);
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35);
         position: relative;
         overflow: hidden;
-    }
-    .hero-banner::before {
-        content: "";
-        position: absolute;
-        top: -40px;
-        right: -40px;
-        width: 180px;
-        height: 180px;
-        background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
     }
     .hero-tag {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(56, 189, 248, 0.1);
-        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid #38bdf8;
         color: #38bdf8;
         font-size: 0.78rem;
         font-weight: 700;
@@ -97,6 +75,7 @@ PREMIUM_CSS = """
     @keyframes pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.4; transform: scale(0.85); }
+    }
     .hero-title {
         font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
         font-size: 2.7rem !important;
@@ -108,47 +87,26 @@ PREMIUM_CSS = """
         display: block !important;
         line-height: 1.2 !important;
     }
-    .hero-sub {
-        color: #e2e8f0 !important;
-        font-size: 1.1rem !important;
-        font-weight: 500 !important;
-        margin: 0 !important;
-        max-width: 860px !important;
-        line-height: 1.55 !important;
-    }
 
-    /* Sample Questions Header */
+    /* Section Label */
     .section-label {
         font-family: 'Outfit', sans-serif;
         font-size: 1.1rem;
         font-weight: 700;
-        color: #e2e8f0;
         margin: 20px 0 10px 0;
         display: flex;
         align-items: center;
         gap: 8px;
     }
 
-    /* Answer Cards */
+    /* Cards */
     .rag-card {
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(148, 163, 184, 0.12);
         border-radius: 16px;
         padding: 24px 28px;
         margin: 18px 0;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
         transition: all 0.2s ease;
     }
-    .rag-card.verified {
-        border-left: 4px solid #38bdf8;
-    }
-    .rag-card.not-found-card {
-        border-left: 4px solid #ef4444;
-        background: rgba(28, 16, 24, 0.7);
-    }
     .rag-q-title {
-        color: #f8fafc;
         font-size: 1.15rem;
         font-weight: 700;
         margin: 0 0 14px 0;
@@ -157,7 +115,6 @@ PREMIUM_CSS = """
         gap: 8px;
     }
     .rag-ans-body {
-        color: #cbd5e1;
         font-size: 1.0rem;
         line-height: 1.65;
         margin-bottom: 16px;
@@ -195,9 +152,6 @@ PREMIUM_CSS = """
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        background: rgba(148, 163, 184, 0.12);
-        border: 1px solid rgba(148, 163, 184, 0.22);
-        color: #cbd5e1;
         font-weight: 500;
         font-size: 0.82rem;
         padding: 3px 10px;
@@ -206,106 +160,24 @@ PREMIUM_CSS = """
         margin-bottom: 6px;
     }
 
-    /* Dynamic Theme Styles */
-    /* Light Mode Adaptation (via Streamlit theme toggle or system) */
-    @media (prefers-color-scheme: light) {
-        .stApp {
-            background: #f8fafc !important;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
-            color: #0f172a !important;
-        }
-        .rag-card {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
-        }
-        .rag-card.verified {
-            border-left: 5px solid #0284c7 !important;
-        }
-        .rag-card.not-found-card {
-            border-left: 5px solid #ef4444 !important;
-            background: #fff5f5 !important;
-        }
-        .rag-q-title {
-            color: #0f172a !important;
-        }
-        .rag-ans-body {
-            color: #1e293b !important;
-        }
-        .section-label {
-            color: #0f172a !important;
-        }
-        .sidebar-stat-card {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-        }
-        .sidebar-stat-card div span {
-            color: #0f172a !important;
-        }
-        .footer-disclaimer {
-            background: #f1f5f9 !important;
-            color: #475569 !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-        .badge-chapter {
-            background: #e2e8f0 !important;
-            color: #1e293b !important;
-            border: 1px solid #cbd5e1 !important;
-        }
+    /* Sidebar Glass Card */
+    .sidebar-stat-card {
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
     }
 
-    /* Streamlit light theme attribute override */
-    [data-theme="light"] .stApp,
-    .light-theme .stApp,
-    div[data-testid="stAppViewContainer"].light-bg {
-        background: #f8fafc !important;
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
-        color: #0f172a !important;
-    }
-    [data-theme="light"] .rag-card,
-    .light-theme .rag-card {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
-    }
-    [data-theme="light"] .rag-q-title,
-    .light-theme .rag-q-title {
-        color: #0f172a !important;
-    }
-    [data-theme="light"] .rag-ans-body,
-    .light-theme .rag-ans-body {
-        color: #1e293b !important;
-    }
-    [data-theme="light"] .section-label,
-    .light-theme .section-label {
-        color: #0f172a !important;
-    }
-    [data-theme="light"] .sidebar-stat-card,
-    .light-theme .sidebar-stat-card {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-    }
-    [data-theme="light"] .footer-disclaimer,
-    .light-theme .footer-disclaimer {
-        background: #f1f5f9 !important;
-        color: #475569 !important;
-        border: 1px solid #e2e8f0 !important;
-    }
-    [data-theme="light"] .badge-chapter,
-    .light-theme .badge-chapter {
-        background: #e2e8f0 !important;
-        color: #1e293b !important;
-        border: 1px solid #cbd5e1 !important;
+    /* Disclaimer */
+    .footer-disclaimer {
+        border-radius: 12px;
+        padding: 14px 20px;
+        font-size: 0.84rem;
+        line-height: 1.5;
+        margin-top: 36px;
+        text-align: center;
     }
 </style>
 """
-
-st.markdown(PREMIUM_CSS, unsafe_allow_html=True)
 
 DEFAULT_PDF_PATH = os.path.join(os.path.dirname(__file__), "data", "Manual_of_Designs_Practice_and_Procedure.pdf")
 
@@ -323,74 +195,21 @@ def get_rag_pipeline(api_key: str):
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
+if "theme_mode" not in st.session_state:
+    st.session_state.theme_mode = "🌙 Dark Mode"
+
 # Sidebar Configuration
 with st.sidebar:
     st.markdown("### 🎨 Display Theme")
     theme_choice = st.radio(
         "Theme Mode",
-        ["Auto (System)", "☀️ Light Mode", "🌙 Dark Mode"],
-        index=0,
+        ["🌙 Dark Mode", "☀️ Light Mode"],
+        index=0 if st.session_state.theme_mode == "🌙 Dark Mode" else 1,
         horizontal=True,
         label_visibility="collapsed"
     )
-    if theme_choice == "☀️ Light Mode":
-        st.markdown("""
-        <style>
-        .stApp {
-            background: #f8fafc !important;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
-            color: #0f172a !important;
-        }
-        .rag-card {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
-        }
-        .rag-card.verified {
-            border-left: 5px solid #0284c7 !important;
-        }
-        .rag-card.not-found-card {
-            border-left: 5px solid #ef4444 !important;
-            background: #fff5f5 !important;
-        }
-        .rag-q-title {
-            color: #0f172a !important;
-        }
-        .rag-ans-body {
-            color: #1e293b !important;
-        }
-        .section-label {
-            color: #0f172a !important;
-        }
-        .sidebar-stat-card {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-        .footer-disclaimer {
-            background: #f1f5f9 !important;
-            color: #475569 !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-        .badge-chapter {
-            background: #e2e8f0 !important;
-            color: #1e293b !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-    elif theme_choice == "🌙 Dark Mode":
-        st.markdown("""
-        <style>
-        .stApp {
-            background: #0b1120 !important;
-            color: #f1f5f9 !important;
-        }
-        .rag-card {
-            background: rgba(15, 23, 42, 0.85) !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    st.session_state.theme_mode = theme_choice
+    is_light = (theme_choice == "☀️ Light Mode")
 
     st.markdown("---")
     st.markdown("### ⚖️ Assistant Controls")
@@ -487,6 +306,119 @@ with st.sidebar:
     if st.button("🗑️ Clear Chat History"):
         st.session_state.chat_history = []
         st.rerun()
+
+# Dynamic Theme Injection
+if is_light:
+    THEME_CSS = """
+    <style>
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"], .main, .block-container {
+            background-color: #f8fafc !important;
+            background: #f8fafc !important;
+            background-image: none !important;
+            color: #0f172a !important;
+        }
+        section[data-testid="stSidebar"] {
+            background-color: #ffffff !important;
+            border-right: 1px solid #cbd5e1 !important;
+        }
+        section[data-testid="stSidebar"] * {
+            color: #0f172a !important;
+        }
+        .rag-card {
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+        }
+        .rag-card.verified {
+            border-left: 5px solid #0284c7 !important;
+        }
+        .rag-card.not-found-card {
+            border-left: 5px solid #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+        .rag-q-title {
+            color: #0f172a !important;
+        }
+        .rag-ans-body {
+            color: #1e293b !important;
+        }
+        .section-label {
+            color: #0f172a !important;
+        }
+        .sidebar-stat-card {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        .footer-disclaimer {
+            background-color: #e2e8f0 !important;
+            color: #334155 !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        .badge-chapter {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        .stTextInput input, .stTextArea textarea {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+    </style>
+    """
+else:
+    THEME_CSS = """
+    <style>
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"] {
+            background-color: #0b1120 !important;
+            background: #0b1120 !important;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(14, 116, 144, 0.18) 0px, transparent 50%) !important;
+            color: #f1f5f9 !important;
+        }
+        section[data-testid="stSidebar"] {
+            background-color: #0f172a !important;
+            border-right: 1px solid rgba(148, 163, 184, 0.12) !important;
+        }
+        .rag-card {
+            background: rgba(15, 23, 42, 0.85) !important;
+            border: 1px solid rgba(148, 163, 184, 0.12) !important;
+        }
+        .rag-card.verified {
+            border-left: 4px solid #38bdf8 !important;
+        }
+        .rag-card.not-found-card {
+            border-left: 4px solid #ef4444 !important;
+            background: rgba(28, 16, 24, 0.7) !important;
+        }
+        .rag-q-title {
+            color: #f8fafc !important;
+        }
+        .rag-ans-body {
+            color: #cbd5e1 !important;
+        }
+        .section-label {
+            color: #e2e8f0 !important;
+        }
+        .sidebar-stat-card {
+            background: rgba(30, 41, 59, 0.7) !important;
+            border: 1px solid rgba(148, 163, 184, 0.15) !important;
+        }
+        .footer-disclaimer {
+            background: rgba(15, 23, 42, 0.6) !important;
+            color: #64748b !important;
+        }
+        .badge-chapter {
+            background: rgba(148, 163, 184, 0.12) !important;
+            border: 1px solid rgba(148, 163, 184, 0.22) !important;
+            color: #cbd5e1 !important;
+        }
+    </style>
+    """
+
+st.markdown(BASE_CSS + THEME_CSS, unsafe_allow_html=True)
 
 # Main Hero Header
 st.markdown("""
