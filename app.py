@@ -1,7 +1,7 @@
 """
-app.py - Streamlit Frontend for Designs Law Assistant
+app.py - High-End Streamlit Frontend for Designs Law Assistant
 
-A clean, professional web application for answering questions on India's
+A polished, state-of-the-art web application for answering questions on India's
 Manual of Designs Practice & Procedure using LangChain, ChromaDB, and Gemini.
 """
 
@@ -9,126 +9,228 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 
-from rag_pipeline import DesignsLawRAG, DEFAULT_CHROMA_DIR, DEFAULT_RETRIEVAL_K, DEFAULT_RETRIEVAL_THRESHOLD
+from rag_pipeline import (
+    DesignsLawRAG,
+    DEFAULT_CHROMA_DIR,
+    DEFAULT_RETRIEVAL_K,
+    DEFAULT_RETRIEVAL_THRESHOLD,
+    DEFAULT_GEMINI_MODEL
+)
 
 # Load environment
 load_dotenv()
 
 # Page configuration
 st.set_page_config(
-    page_title="Designs Law Assistant",
+    page_title="Designs Law Assistant | RAG System",
     page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling (Navy Blue, Light Blue, White Theme)
-CUSTOM_CSS = """
+# Premium Custom Styling
+PREMIUM_CSS = """
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-    /* Main container styling */
-    .main {
-        background-color: #f8fafc;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Global Fonts & Smoothing */
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
-    /* Header typography */
-    .app-header {
-        background: linear-gradient(135deg, #0a2540 0%, #1a365d 100%);
-        color: white;
-        padding: 24px 32px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 12px rgba(10, 37, 64, 0.15);
-    }
-    .app-header h1 {
-        color: #ffffff;
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .app-header p {
-        color: #cbd5e1;
-        font-size: 1.05rem;
-        margin: 0;
+    .stApp {
+        background: #0b1120;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(14, 116, 144, 0.18) 0px, transparent 50%);
+        color: #f1f5f9;
     }
 
-    /* Cards */
-    .answer-card {
-        background: white;
-        border-radius: 12px;
-        padding: 24px;
-        margin-top: 16px;
-        margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    /* Top Hero Banner */
+    .hero-banner {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 18px;
+        padding: 32px 36px;
+        margin-bottom: 24px;
+        backdrop-filter: blur(16px);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
     }
-    .answer-card.not-found {
-        border-left: 5px solid #e53e3e;
-        background-color: #fffaf0;
+    .hero-banner::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
-    .answer-card.success {
-        border-left: 5px solid #2b6cb0;
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        color: #38bdf8;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        margin-bottom: 12px;
+    }
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #38bdf8;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #38bdf8;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .hero-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.4rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px 0;
+        background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+        color: #94a3b8;
+        font-size: 1.05rem;
+        margin: 0;
+        max-width: 820px;
+        line-height: 1.5;
+    }
+
+    /* Sample Questions Header */
+    .section-label {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin: 20px 0 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Answer Cards */
+    .rag-card {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin: 18px 0;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease;
+    }
+    .rag-card.verified {
+        border-left: 4px solid #38bdf8;
+    }
+    .rag-card.not-found-card {
+        border-left: 4px solid #ef4444;
+        background: rgba(28, 16, 24, 0.7);
+    }
+    .rag-q-title {
+        color: #f8fafc;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0 0 14px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .rag-ans-body {
+        color: #cbd5e1;
+        font-size: 1.0rem;
+        line-height: 1.65;
+        margin-bottom: 16px;
     }
 
     /* Badges */
-    .badge-page {
-        display: inline-block;
-        background-color: #ebf8ff;
-        color: #2b6cb0;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 6px;
+    .badge-not-found {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #f87171;
+        font-weight: 700;
         font-size: 0.85rem;
+        padding: 5px 14px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+    .badge-page {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        color: #38bdf8;
+        font-weight: 600;
+        font-size: 0.82rem;
+        padding: 3px 10px;
+        border-radius: 6px;
         margin-right: 6px;
         margin-bottom: 6px;
-        border: 1px solid #bee3f8;
     }
     .badge-chapter {
-        display: inline-block;
-        background-color: #edf2f7;
-        color: #2d3748;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(148, 163, 184, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        color: #cbd5e1;
         font-weight: 500;
-        padding: 4px 10px;
+        font-size: 0.82rem;
+        padding: 3px 10px;
         border-radius: 6px;
-        font-size: 0.85rem;
         margin-right: 6px;
         margin-bottom: 6px;
     }
-    .badge-not-found {
-        display: inline-block;
-        background-color: #fed7d7;
-        color: #9b2c2c;
-        font-weight: 700;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
+
+    /* Sidebar Glass Card */
+    .sidebar-stat-card {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
     }
 
     /* Disclaimer */
-    .disclaimer-box {
-        background-color: #f7fafc;
-        border-top: 1px solid #e2e8f0;
-        padding: 16px 20px;
-        font-size: 0.85rem;
-        color: #718096;
-        border-radius: 8px;
-        margin-top: 30px;
-    }
-
-    /* Sample Questions */
-    .sample-q-btn {
-        margin-bottom: 8px;
-        text-align: left;
+    .footer-disclaimer {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 12px;
+        padding: 14px 20px;
+        color: #64748b;
+        font-size: 0.84rem;
+        line-height: 1.5;
+        margin-top: 36px;
+        text-align: center;
     }
 </style>
 """
 
-st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+st.markdown(PREMIUM_CSS, unsafe_allow_html=True)
 
-# Default PDF file location
 DEFAULT_PDF_PATH = os.path.join(os.path.dirname(__file__), "data", "Manual_of_Designs_Practice_and_Procedure.pdf")
 
 
@@ -145,12 +247,9 @@ def get_rag_pipeline(api_key: str):
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-if "pending_question" not in st.session_state:
-    st.session_state.pending_question = None
-
 # Sidebar Configuration
 with st.sidebar:
-    st.markdown("### ⚖️ System Configuration")
+    st.markdown("### ⚖️ Assistant Controls")
 
     # API Key Input
     env_key = os.getenv("GOOGLE_API_KEY", "")
@@ -158,18 +257,17 @@ with st.sidebar:
         "Google Gemini API Key",
         value=env_key,
         type="password",
-        help="Reads GOOGLE_API_KEY from .env by default. You can override it here."
+        help="API Key is loaded from .env by default. You can also override it here."
     )
 
     if api_key:
-        st.success("API Key configured", icon="✅")
+        st.success("API Key Active", icon="⚡")
     else:
-        st.warning("API Key missing! Add to .env or enter above.", icon="⚠️")
+        st.warning("API Key Missing! Set in .env or paste above.", icon="🔑")
 
     st.markdown("---")
-    st.markdown("### 📄 Document & Index Status")
+    st.markdown("### 📚 Knowledge Base")
 
-    # Initialize RAG
     rag = get_rag_pipeline(api_key)
     if api_key:
         rag.set_api_key(api_key)
@@ -178,11 +276,11 @@ with st.sidebar:
 
     # Auto-index default PDF if not already indexed
     if not index_status["is_indexed"] and os.path.exists(DEFAULT_PDF_PATH):
-        with st.spinner("Initial indexing of 'Manual of Designs Practice & Procedure'..."):
+        with st.spinner("Indexing official 87-page Manual..."):
             try:
-                index_result = rag.index_document(DEFAULT_PDF_PATH)
-                st.toast("Manual indexed successfully!", icon="📚")
+                rag.index_document(DEFAULT_PDF_PATH)
                 index_status = rag.get_index_status()
+                st.toast("Manual indexed successfully!", icon="✅")
             except Exception as e:
                 st.error(f"Error during initial indexing: {e}")
 
@@ -190,32 +288,39 @@ with st.sidebar:
         meta = index_status.get("metadata", {})
         pages = meta.get("total_pages", 87)
         chunks = index_status.get("total_chunks", 0)
-        st.metric(label="Document Pages", value=pages)
-        st.metric(label="ChromaDB Chunks", value=chunks)
-        st.info(f"Source: {meta.get('filename', 'Manual_of_Designs_Practice_and_Procedure.pdf')}")
+
+        st.markdown(f"""
+        <div class="sidebar-stat-card">
+            <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; color:#38bdf8; font-weight:700;">Vector Store Active</div>
+            <div style="display:flex; justify-content:space-between; margin-top:8px;">
+                <div><span style="font-size:1.4rem; font-weight:800; color:#fff;">{pages}</span><br><span style="font-size:0.78rem; color:#94a3b8;">Total Pages</span></div>
+                <div><span style="font-size:1.4rem; font-weight:800; color:#38bdf8;">{chunks}</span><br><span style="font-size:0.78rem; color:#94a3b8;">Text Chunks</span></div>
+            </div>
+            <div style="margin-top:10px; font-size:0.75rem; color:#64748b; word-break:break-all;">Manual_of_Designs_Practice_and_Procedure.pdf</div>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.warning("No document currently indexed. Please upload or index below.", icon="📁")
 
     # File uploader
-    st.markdown("#### Upload Source PDF")
-    uploaded_file = st.file_uploader("Upload Manual PDF", type=["pdf"])
-
-    if uploaded_file is not None:
-        save_path = os.path.join(os.path.dirname(__file__), "data", uploaded_file.name)
-        with open(save_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        st.success(f"Uploaded: {uploaded_file.name}")
-        if st.button("Index Uploaded PDF", type="primary"):
-            with st.spinner("Extracting pages, generating embeddings, and storing in ChromaDB..."):
-                try:
-                    res = rag.index_document(save_path, force_reindex=True)
-                    st.success(f"Indexed {res['total_pages']} pages into {res['total_chunks']} chunks!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Indexing failed: {e}")
+    with st.expander("📤 Upload / Change PDF"):
+        uploaded_file = st.file_uploader("Choose a PDF", type=["pdf"])
+        if uploaded_file is not None:
+            save_path = os.path.join(os.path.dirname(__file__), "data", uploaded_file.name)
+            with open(save_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            st.success(f"Saved: {uploaded_file.name}")
+            if st.button("Index This PDF", type="primary"):
+                with st.spinner("Extracting and vectorizing document..."):
+                    try:
+                        res = rag.index_document(save_path, force_reindex=True)
+                        st.success(f"Indexed {res['total_pages']} pages into {res['total_chunks']} chunks!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Indexing failed: {e}")
 
     if index_status["is_indexed"]:
-        if st.button("Force Re-index"):
+        if st.button("🔄 Force Re-index"):
             target_path = DEFAULT_PDF_PATH if os.path.exists(DEFAULT_PDF_PATH) else None
             if target_path:
                 with st.spinner("Re-indexing document..."):
@@ -224,69 +329,82 @@ with st.sidebar:
                     st.rerun()
 
     st.markdown("---")
-    st.markdown("### ⚙️ Retrieval Parameters")
-    retrieval_k = st.slider("Top-K Excerpts", min_value=1, max_value=8, value=DEFAULT_RETRIEVAL_K, step=1)
+    st.markdown("### ⚙️ Precision Parameters")
+    retrieval_k = st.slider("Top Excerpts (K)", min_value=1, max_value=8, value=DEFAULT_RETRIEVAL_K, step=1)
     retrieval_threshold = st.slider(
-        "Distance Threshold",
+        "Relevance Cutoff (Distance)",
         min_value=0.40,
         max_value=1.00,
         value=DEFAULT_RETRIEVAL_THRESHOLD,
         step=0.05,
-        help="Cosine distance cutoff. Lower is stricter. If best chunk distance exceeds this, 'Not found' is returned directly."
+        help="Cosine distance threshold. If best chunk distance exceeds this, 'Not found' is strictly returned."
     )
 
-    if st.button("Clear Conversation"):
+    if st.button("🗑️ Clear Chat History"):
         st.session_state.chat_history = []
         st.rerun()
 
-# Main Application Area
+# Main Hero Header
 st.markdown("""
-<div class="app-header">
-    <h1>⚖️ Designs Law Assistant</h1>
-    <p>AI-powered answers grounded in India's <strong>Manual of Designs Practice & Procedure</strong></p>
+<div class="hero-banner">
+    <div class="hero-tag">
+        <span class="pulse-dot"></span>
+        Grounded Legal RAG &bull; India IP Office
+    </div>
+    <div class="hero-title">⚖️ Designs Law Assistant</div>
+    <p class="hero-sub">
+        Autonomous, citation-backed answers grounded exclusively in the official 
+        <strong>Manual of Designs Practice & Procedure</strong>. Powered by LangChain, ChromaDB, and Google Gemini.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-# Assignment Sample Questions
-st.markdown("#### 🎯 Clickable Assignment Questions")
-st.caption("Click any of the five required assignment questions to test the grounded RAG pipeline immediately:")
+# Clickable Assignment Questions
+st.markdown('<div class="section-label">🎯 Clickable Assignment Questions</div>', unsafe_allow_html=True)
+st.caption("Click any required test question below to run the actual retrieval and grounding pipeline instantly:")
 
 ASSIGNMENT_QUESTIONS = [
-    "How long does a proprietor have copyright in a registered design, and can it be extended?",
-    "Which classification system is used to register designs?",
-    "What is the government fee to register a trademark?",
-    "Who is the current Controller General of Patents?",
-    "What is the fee to register a design?"
+    ("Q1 • Copyright Duration", "How long does a proprietor have copyright in a registered design, and can it be extended?"),
+    ("Q2 • Classification System", "Which classification system is used to register designs?"),
+    ("Q3 • Negative Test: Trademark", "What is the government fee to register a trademark?"),
+    ("Q4 • Negative Test: Controller", "Who is the current Controller General of Patents?"),
+    ("Q5 • Design Registration Fee", "What is the fee to register a design?")
 ]
 
 col1, col2 = st.columns([1, 1])
 
 clicked_sample = None
-for idx, q_text in enumerate(ASSIGNMENT_QUESTIONS):
+for idx, (label, q_text) in enumerate(ASSIGNMENT_QUESTIONS):
     target_col = col1 if idx < 3 else col2
     with target_col:
-        if st.button(f"Q{idx+1}: {q_text}", key=f"sample_q_{idx}", use_container_width=True):
+        if st.button(f"**{label}**\n\n_{q_text}_", key=f"sample_q_{idx}", use_container_width=True):
             clicked_sample = q_text
 
-# Text input for questions
-user_question = st.text_input(
-    "Ask a question about Indian Industrial Designs Law:",
-    placeholder="e.g., How long is a registered design protected in India?",
-    key="user_query_input"
-)
+# Text input for custom questions
+st.markdown('<div class="section-label">💬 Custom Question Input</div>', unsafe_allow_html=True)
+col_input, col_btn = st.columns([5, 1])
 
-ask_btn = st.button("🔍 Ask Assistant", type="primary")
+with col_input:
+    user_question = st.text_input(
+        "Ask a custom question:",
+        placeholder="Type any question about Indian Industrial Designs Law...",
+        label_visibility="collapsed",
+        key="user_query_input"
+    )
+
+with col_btn:
+    ask_btn = st.button("🔍 Ask", type="primary", use_container_width=True)
 
 query_to_run = clicked_sample or (user_question.strip() if ask_btn else None)
 
-# Execute question
+# Execute query through RAG pipeline
 if query_to_run:
     if not api_key:
-        st.error("Please provide a valid Google Gemini API key in the sidebar before asking questions.")
+        st.error("Please configure your Google Gemini API key in the sidebar before asking questions.")
     elif not index_status["is_indexed"]:
-        st.error("Document is not yet indexed in ChromaDB. Please ensure the PDF is indexed via the sidebar.")
+        st.error("Document is not yet indexed in ChromaDB. Please check the sidebar to index the PDF.")
     else:
-        with st.spinner("Searching Manual and generating verified answer..."):
+        with st.spinner("Retrieving verified excerpts & generating grounded answer..."):
             result = rag.answer_question(
                 question=query_to_run,
                 k=retrieval_k,
@@ -294,9 +412,9 @@ if query_to_run:
             )
             st.session_state.chat_history.insert(0, result)
 
-# Display latest answer and history
+# Display Responses and History
 if st.session_state.chat_history:
-    st.markdown("### 💬 Answers & Verified Sources")
+    st.markdown('<div class="section-label">📋 Answers & Verified Sources</div>', unsafe_allow_html=True)
 
     for idx, item in enumerate(st.session_state.chat_history):
         q = item.get("question", "")
@@ -307,60 +425,60 @@ if st.session_state.chat_history:
         excerpts = item.get("source_excerpts", [])
         reason = item.get("reason", "")
 
-        card_class = "not-found" if is_nf else "success"
+        card_class = "not-found-card" if is_nf else "verified"
 
         st.markdown(f"""
-        <div class="answer-card {card_class}">
-            <h4 style="margin-top: 0; color: #1a365d;">📌 Question: {q}</h4>
-            <hr style="border: none; border-top: 1px solid #edf2f7; margin: 12px 0;">
+        <div class="rag-card {card_class}">
+            <div class="rag-q-title">📌 {q}</div>
         """, unsafe_allow_html=True)
 
         if is_nf:
             st.markdown("""
-            <div style="margin-bottom: 12px;">
-                <span class="badge-not-found">Not found</span>
+            <div class="badge-not-found">
+                🔒 Not found
             </div>
             """, unsafe_allow_html=True)
             if reason:
-                st.info(f"**Verification Reason:** {reason}")
-            st.write(ans)
+                st.info(f"**Verification Grounding:** {reason}")
+            st.markdown(f"<div class='rag-ans-body'><strong>Result:</strong> {ans}</div>", unsafe_allow_html=True)
         elif is_err:
             st.error(ans)
         else:
-            st.markdown(ans)
+            st.markdown(f"<div class='rag-ans-body'>{ans}</div>", unsafe_allow_html=True)
 
-            # Citations
+            # Source Badges
             if citations:
-                st.markdown("##### 📖 Source Citations:")
-                citation_html = ""
+                st.markdown("<div style='font-size:0.85rem; font-weight:700; color:#94a3b8; margin-top:14px; margin-bottom:6px;'>📖 VERIFIED CITATIONS:</div>", unsafe_allow_html=True)
+                citation_html = "<div style='display:flex; flex-wrap:wrap; gap:6px;'>"
                 for c in citations:
-                    page_badge = f"<span class='badge-page'>PDF Page {c.get('page', 'N/A')}</span>"
-                    ch_badge = f"<span class='badge-chapter'>{c.get('chapter', 'Chapter N/A')}</span>"
+                    page_badge = f"<span class='badge-page'>📄 PDF Page {c.get('page', 'N/A')}</span>"
+                    ch_badge = f"<span class='badge-chapter'>📚 {c.get('chapter', 'Chapter N/A')}</span>"
                     sec = c.get('section')
-                    sec_badge = f"<span class='badge-chapter'>Section: {sec}</span>" if sec and sec != "N/A" else ""
+                    sec_badge = f"<span class='badge-chapter'>⚖️ Section {sec}</span>" if sec and sec != "N/A" else ""
                     citation_html += f"<div>{page_badge} {ch_badge} {sec_badge}</div>"
+                citation_html += "</div>"
                 st.markdown(citation_html, unsafe_allow_html=True)
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Supporting Source Excerpts Expander
+        # Supporting Excerpts Expander
         if excerpts:
-            with st.expander(f"📑 View Supporting Excerpts from Manual ({len(excerpts)} retrieved chunks)", expanded=False):
+            with st.expander(f"📑 Supporting Excerpts from Manual ({len(excerpts)} retrieved chunks)", expanded=False):
                 for e_idx, ex in enumerate(excerpts, 1):
                     meta = ex.get("metadata", {})
                     sim = ex.get("similarity", 0)
                     dist = ex.get("distance", 0)
-                    st.markdown(f"**Excerpt {e_idx} — Page {meta.get('page')} | {meta.get('chapter')}**")
+                    st.markdown(f"**Excerpt {e_idx} &bull; PDF Page {meta.get('page')} &bull; {meta.get('chapter')}**")
                     if meta.get("section") and meta.get("section") != "N/A":
-                        st.caption(f"Section: `{meta.get('section')}` | Similarity Score: `{sim}` (Distance: `{dist}`)")
+                        st.caption(f"Section: `{meta.get('section')}` | Similarity Match: `{round(sim * 100, 1)}%` (Distance: `{dist}`)")
                     else:
-                        st.caption(f"Similarity Score: `{sim}` (Distance: `{dist}`)")
-                    st.text(ex.get("text", ""))
-                    st.markdown("---")
+                        st.caption(f"Similarity Match: `{round(sim * 100, 1)}%` (Distance: `{dist}`)")
+                    st.code(ex.get("text", ""), language="text")
 
-# Legal Disclaimer
+# Legal Disclaimer Footer
 st.markdown("""
-<div class="disclaimer-box">
-    <strong>⚠️ Disclaimer:</strong> This assistant answers questions using the uploaded document. Verify important information against the original source. It is not a substitute for professional legal advice.
+<div class="footer-disclaimer">
+    <strong>⚠️ Disclaimer:</strong> This assistant answers questions exclusively using excerpts from India's 
+    <em>Manual of Designs Practice & Procedure</em>. Verify critical matters against the official gazette. It is not a substitute for legal counsel.
 </div>
 """, unsafe_allow_html=True)
