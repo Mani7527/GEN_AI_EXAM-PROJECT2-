@@ -97,23 +97,24 @@ PREMIUM_CSS = """
     @keyframes pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.4; transform: scale(0.85); }
-    }
     .hero-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2.4rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin: 0 0 8px 0;
-        background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        font-size: 2.7rem !important;
+        font-weight: 900 !important;
+        letter-spacing: -0.01em !important;
+        margin: 6px 0 12px 0 !important;
+        color: #38bdf8 !important;
+        text-shadow: 0 2px 14px rgba(56, 189, 248, 0.45);
+        display: block !important;
+        line-height: 1.2 !important;
     }
     .hero-sub {
-        color: #94a3b8;
-        font-size: 1.05rem;
-        margin: 0;
-        max-width: 820px;
-        line-height: 1.5;
+        color: #e2e8f0 !important;
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+        max-width: 860px !important;
+        line-height: 1.55 !important;
     }
 
     /* Sample Questions Header */
@@ -346,15 +347,17 @@ with st.sidebar:
 
 # Main Hero Header
 st.markdown("""
-<div class="hero-banner">
-    <div class="hero-tag">
+<div class="hero-banner" style="border: 2px solid #2563eb !important; background: linear-gradient(135deg, #091a38 0%, #0e2752 50%, #173b75 100%) !important; padding: 28px 32px !important; border-radius: 16px !important; box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.35) !important;">
+    <div class="hero-tag" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; font-weight: 700;">
         <span class="pulse-dot"></span>
-        Grounded Legal RAG &bull; India IP Office
+        Grounded Legal RAG &bull; India IP Office (87-Page Manual)
     </div>
-    <div class="hero-title">⚖️ Designs Law Assistant</div>
-    <p class="hero-sub">
-        Autonomous, citation-backed answers grounded exclusively in the official 
-        <strong>Manual of Designs Practice & Procedure</strong>. Powered by LangChain, ChromaDB, and Google Gemini.
+    <h1 style="color: #38bdf8 !important; font-family: 'Outfit', sans-serif !important; font-size: 2.6rem !important; font-weight: 900 !important; margin: 8px 0 10px 0 !important; letter-spacing: -0.01em !important; text-shadow: 0 2px 16px rgba(56, 189, 248, 0.4) !important;">
+        ⚖️ DESIGNS LAW ASSISTANT
+    </h1>
+    <p style="color: #e2e8f0 !important; font-size: 1.05rem !important; margin: 0 !important; line-height: 1.5 !important;">
+        AI-Powered Legal Assistant Grounded in India's <strong>Manual of Designs Practice & Procedure</strong>.
+        Verified Citations &bull; Zero Hallucinations &bull; Exact PDF Page & Section References.
     </p>
 </div>
 """, unsafe_allow_html=True)
