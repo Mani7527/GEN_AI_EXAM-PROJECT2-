@@ -206,26 +206,101 @@ PREMIUM_CSS = """
         margin-bottom: 6px;
     }
 
-    /* Sidebar Glass Card */
-    .sidebar-stat-card {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(148, 163, 184, 0.15);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 14px;
+    /* Dynamic Theme Styles */
+    /* Light Mode Adaptation (via Streamlit theme toggle or system) */
+    @media (prefers-color-scheme: light) {
+        .stApp {
+            background: #f8fafc !important;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
+            color: #0f172a !important;
+        }
+        .rag-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+        }
+        .rag-card.verified {
+            border-left: 5px solid #0284c7 !important;
+        }
+        .rag-card.not-found-card {
+            border-left: 5px solid #ef4444 !important;
+            background: #fff5f5 !important;
+        }
+        .rag-q-title {
+            color: #0f172a !important;
+        }
+        .rag-ans-body {
+            color: #1e293b !important;
+        }
+        .section-label {
+            color: #0f172a !important;
+        }
+        .sidebar-stat-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        }
+        .sidebar-stat-card div span {
+            color: #0f172a !important;
+        }
+        .footer-disclaimer {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        .badge-chapter {
+            background: #e2e8f0 !important;
+            color: #1e293b !important;
+            border: 1px solid #cbd5e1 !important;
+        }
     }
 
-    /* Disclaimer */
-    .footer-disclaimer {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 12px;
-        padding: 14px 20px;
-        color: #64748b;
-        font-size: 0.84rem;
-        line-height: 1.5;
-        margin-top: 36px;
-        text-align: center;
+    /* Streamlit light theme attribute override */
+    [data-theme="light"] .stApp,
+    .light-theme .stApp,
+    div[data-testid="stAppViewContainer"].light-bg {
+        background: #f8fafc !important;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
+        color: #0f172a !important;
+    }
+    [data-theme="light"] .rag-card,
+    .light-theme .rag-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .rag-q-title,
+    .light-theme .rag-q-title {
+        color: #0f172a !important;
+    }
+    [data-theme="light"] .rag-ans-body,
+    .light-theme .rag-ans-body {
+        color: #1e293b !important;
+    }
+    [data-theme="light"] .section-label,
+    .light-theme .section-label {
+        color: #0f172a !important;
+    }
+    [data-theme="light"] .sidebar-stat-card,
+    .light-theme .sidebar-stat-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    [data-theme="light"] .footer-disclaimer,
+    .light-theme .footer-disclaimer {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    [data-theme="light"] .badge-chapter,
+    .light-theme .badge-chapter {
+        background: #e2e8f0 !important;
+        color: #1e293b !important;
+        border: 1px solid #cbd5e1 !important;
     }
 </style>
 """
@@ -250,6 +325,74 @@ if "chat_history" not in st.session_state:
 
 # Sidebar Configuration
 with st.sidebar:
+    st.markdown("### 🎨 Display Theme")
+    theme_choice = st.radio(
+        "Theme Mode",
+        ["Auto (System)", "☀️ Light Mode", "🌙 Dark Mode"],
+        index=0,
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+    if theme_choice == "☀️ Light Mode":
+        st.markdown("""
+        <style>
+        .stApp {
+            background: #f8fafc !important;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.5) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.4) 0px, transparent 50%) !important;
+            color: #0f172a !important;
+        }
+        .rag-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+        }
+        .rag-card.verified {
+            border-left: 5px solid #0284c7 !important;
+        }
+        .rag-card.not-found-card {
+            border-left: 5px solid #ef4444 !important;
+            background: #fff5f5 !important;
+        }
+        .rag-q-title {
+            color: #0f172a !important;
+        }
+        .rag-ans-body {
+            color: #1e293b !important;
+        }
+        .section-label {
+            color: #0f172a !important;
+        }
+        .sidebar-stat-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        .footer-disclaimer {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        .badge-chapter {
+            background: #e2e8f0 !important;
+            color: #1e293b !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+    elif theme_choice == "🌙 Dark Mode":
+        st.markdown("""
+        <style>
+        .stApp {
+            background: #0b1120 !important;
+            color: #f1f5f9 !important;
+        }
+        .rag-card {
+            background: rgba(15, 23, 42, 0.85) !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    st.markdown("---")
     st.markdown("### ⚖️ Assistant Controls")
 
     # API Key Input
@@ -398,7 +541,8 @@ with col_input:
 with col_btn:
     ask_btn = st.button("🔍 Ask", type="primary", use_container_width=True)
 
-query_to_run = clicked_sample or (user_question.strip() if ask_btn else None)
+url_q = st.query_params.get("q", None)
+query_to_run = url_q or clicked_sample or (user_question.strip() if ask_btn else None)
 
 # Execute query through RAG pipeline
 if query_to_run:
@@ -413,7 +557,9 @@ if query_to_run:
                 k=retrieval_k,
                 threshold=retrieval_threshold
             )
-            st.session_state.chat_history.insert(0, result)
+            # Avoid duplicate consecutive insertions
+            if not st.session_state.chat_history or st.session_state.chat_history[0].get("question") != query_to_run:
+                st.session_state.chat_history.insert(0, result)
 
 # Display Responses and History
 if st.session_state.chat_history:
@@ -466,7 +612,7 @@ if st.session_state.chat_history:
 
         # Supporting Excerpts Expander
         if excerpts:
-            with st.expander(f"📑 Supporting Excerpts from Manual ({len(excerpts)} retrieved chunks)", expanded=False):
+            with st.expander(f"📑 Supporting Excerpts from Manual ({len(excerpts)} retrieved chunks)", expanded=(idx == 0)):
                 for e_idx, ex in enumerate(excerpts, 1):
                     meta = ex.get("metadata", {})
                     sim = ex.get("similarity", 0)

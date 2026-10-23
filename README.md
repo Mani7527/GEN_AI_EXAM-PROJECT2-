@@ -2,6 +2,40 @@
 
 **An AI-powered Legal Retrieval-Augmented Generation (RAG) system for Indian Industrial Designs Law, grounded exclusively in the official *Manual of Designs Practice & Procedure* (87 pages).**
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/Mani7527/GEN_AI_EXAM-PROJECT2-.git)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen?logo=python)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-red?logo=streamlit)](https://streamlit.io/)
+[![ChromaDB](https://img.shields.io/badge/ChromaDB-Persistent-purple)](https://www.trychroma.com/)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-Flash-orange?logo=google)](https://ai.google.dev/)
+
+---
+
+## ⚡ Quick Start: Run in 3 Commands
+
+Anyone can run this project locally in less than 2 minutes:
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Mani7527/GEN_AI_EXAM-PROJECT2-.git
+cd GEN_AI_EXAM-PROJECT2-
+
+# 2. Setup Virtual Environment & Install Dependencies
+# On macOS / Linux:
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# On Windows (Command Prompt / PowerShell):
+# python -m venv venv
+# venv\Scripts\activate
+# pip install -r requirements.txt
+
+# 3. Launch the Web Application
+streamlit run app.py
+```
+
+The application will launch immediately at **`http://localhost:8501`**.
+
 ---
 
 ## 1. Project Overview
@@ -23,7 +57,7 @@ Build a domain-grounded RAG application using Python, ChromaDB, LangChain, and G
 3. Displays supporting verbatim excerpts.
 4. Returns **"Not found"** whenever evidence is insufficient or outside the document scope.
 5. Prevents hallucination of fees, provisions, dates, or officeholders.
-6. Provides an intuitive, modern web interface with clickable sample questions.
+6. Provides an intuitive, modern web interface with clickable sample questions and light/dark theme switching.
 
 ---
 
@@ -38,7 +72,7 @@ Build a domain-grounded RAG application using Python, ChromaDB, LangChain, and G
 - **Persistent Vector Storage:** Uses ChromaDB with cosine distance indexing and document hash caching (`SHA-256`) to prevent redundant indexing.
 - **Fast Local Embeddings:** Employs Hugging Face `sentence-transformers` (`all-MiniLM-L6-v2`) generating 384-dimensional dense vectors.
 - **Clickable Assignment Questions:** One-click evaluation buttons for all 5 college assignment questions.
-- **Dynamic Threshold Calibration:** Interactive slider in the sidebar to adjust retrieval sensitivity.
+- **Theme Switcher:** Live toggle between ☀️ Light Mode and 🌙 Dark Mode.
 
 ---
 
@@ -46,7 +80,7 @@ Build a domain-grounded RAG application using Python, ChromaDB, LangChain, and G
 
 | Component | Technology | Purpose |
 |---|---|---|
-| **Frontend** | Streamlit | Clean, interactive web UI with custom styling |
+| **Frontend** | Streamlit | Clean, interactive web UI with custom styling & light/dark mode |
 | **Orchestration** | LangChain / Python | RAG pipeline coordination and prompt structuring |
 | **Vector Database** | ChromaDB | Local persistent vector storage and cosine similarity search |
 | **Embeddings** | Hugging Face `sentence-transformers` (`all-MiniLM-L6-v2`) | High-speed, local 384-dimensional text embeddings |
@@ -98,16 +132,16 @@ graph TD
 ## 7. Project Folder Structure
 
 ```
-designs-law-assistant/
+GEN_AI_EXAM-PROJECT2-/
 │
-├── app.py                         # Streamlit web interface and user interaction
+├── app.py                         # Streamlit web interface with light/dark theme & sample buttons
 ├── rag_pipeline.py                # Embedding, ChromaDB storage, retrieval, LLM calling
 ├── document_processor.py          # PDF extraction, metadata preservation, chunking
 ├── requirements.txt               # Python package dependencies
 ├── .env.example                   # Environment variable template
 ├── .env                           # Local environment secrets (ignored by git)
 ├── .gitignore                     # Git ignore rules for secrets and large files
-├── README.md                      # Comprehensive project documentation
+├── README.md                      # Comprehensive project documentation with screenshots
 │
 ├── data/
 │   ├── .gitkeep
@@ -118,6 +152,14 @@ designs-law-assistant/
 │   ├── chroma.sqlite3             # Persistent ChromaDB vector index
 │   └── index_metadata.json        # Indexing statistics & document SHA-256 hash
 │
+├── screenshots/                   # Verification screenshots for assignment questions
+│   ├── q1_copyright_duration.png
+│   ├── q2_classification_system.png
+│   ├── q3_trademark_fee_negative_test.png
+│   ├── q4_current_controller_negative_test.png
+│   ├── q5_design_registration_fee.png
+│   └── q6_virat_kohli_out_of_domain.png
+│
 └── tests/
     └── test_document_processor.py # 9 unit tests for extraction, chunking, retrieval & Not found
 ```
@@ -126,9 +168,10 @@ designs-law-assistant/
 
 ## 8. Installation Instructions (macOS)
 
-1. Clone or open the project folder in your terminal:
+1. Open Terminal and clone repository:
    ```bash
-   cd /path/to/designs-law-assistant
+   git clone https://github.com/Mani7527/GEN_AI_EXAM-PROJECT2-.git
+   cd GEN_AI_EXAM-PROJECT2-
    ```
 
 2. Create a Python virtual environment:
@@ -150,9 +193,10 @@ designs-law-assistant/
 
 ## 9. Installation Instructions (Windows)
 
-1. Open PowerShell or Command Prompt in the project folder:
+1. Open PowerShell or Command Prompt:
    ```cmd
-   cd path\to\designs-law-assistant
+   git clone https://github.com/Mani7527/GEN_AI_EXAM-PROJECT2-.git
+   cd GEN_AI_EXAM-PROJECT2-
    ```
 
 2. Create a virtual environment:
@@ -184,7 +228,7 @@ designs-law-assistant/
    cp .env.example .env
    ```
 
-2. Edit `.env` and paste your Gemini API key:
+2. Edit `.env` and set your Gemini API key:
    ```env
    GOOGLE_API_KEY=your_actual_gemini_api_key_here
    CHROMA_DB_DIR=chroma_db
@@ -194,7 +238,7 @@ designs-law-assistant/
    RETRIEVAL_THRESHOLD=0.75
    ```
 
-3. You can also directly paste or override your API key inside the web application sidebar during runtime.
+3. You can also paste or override your API key directly inside the web application sidebar during runtime.
 
 ---
 
@@ -202,7 +246,7 @@ designs-law-assistant/
 
 1. Place the official `Manual of Designs Practice & Procedure` PDF into the `data/` folder named:
    `Manual_of_Designs_Practice_and_Procedure.pdf`
-2. **Web Interface Upload:** If the PDF is not present locally, launch the application. The sidebar contains a **Upload Source PDF** file uploader. Upload the PDF and click **"Index Uploaded PDF"**.
+2. **Web Interface Upload:** If the PDF is not present locally, launch the application. The sidebar contains an **Upload / Change PDF** file uploader. Upload the PDF and click **"Index This PDF"**.
 
 ---
 
@@ -223,62 +267,84 @@ Activate your virtual environment and start Streamlit:
 streamlit run app.py
 ```
 
-The application will automatically open in your default browser at:
-`http://localhost:8501`
+The application opens automatically at `http://localhost:8501`.
 
 ---
 
-## 14. The Five Assignment Questions and Verified Answers
+## 14. Assignment Questions, Screenshots & Verification
 
-The application features 5 dedicated quick-action buttons corresponding to the assignment requirements:
+Below are the actual application screenshots showing the verified answers, citations, and expanded source excerpts:
 
-### Question 1:
+---
+
+### Question 1: Copyright Duration
 > *"How long does a proprietor have copyright in a registered design, and can it be extended?"*
-- **Status:** **Answered**
-- **Verified Answer:** The proprietor holds copyright in a registered design for an initial period of **ten years** from the date of registration. This period can be extended by a further period of **five years** if the registered proprietor applies in the prescribed manner before the expiry of the initial ten-year term.
-- **Citations:** **PDF Page 36** (Section 06.04, Section 11) & **PDF Page 39** (Section 07.02, Form 3).
-- **Supporting Evidence:**
-  > *"06.04 Period of protection: a. The proprietor shall have copyright in the design for ten years from the date of registration. b. This period of ten years can be extended by five years, if the registered proprietor applies for extension in prescribed manner."*
+
+- **Status:** **Answered with Citations**
+- **Grounded Answer:** The proprietor holds copyright in a registered design for an initial period of **ten years** from the date of registration. This period can be extended by a further period of **five years** if the registered proprietor applies for extension in the prescribed manner before the expiry of the initial ten years.
+- **Citations:** **PDF Page 36** (Chapter 6, Section 06.04, Section 11) & **PDF Page 39** (Chapter 7, Section 07.02, Form 3).
+
+![Question 1 Screenshot](screenshots/q1_copyright_duration.png)
 
 ---
 
-### Question 2:
+### Question 2: Classification System
 > *"Which classification system is used to register designs?"*
-- **Status:** **Answered**
-- **Verified Answer:** Designs are registered under an elaborate classification system based on the international **Locarno Classification system**. Articles are classified into **thirty-one classes** and a miscellaneous class 99, as set forth in the Third Schedule of the Design Rules, 2001. (Note: India is not a signatory to the Locarno Agreement, but uses it as the basis).
-- **Citations:** **PDF Page 20** (Section 03.06.02.06, Section 5(3), Rule 10, 11) & **PDF Page 5** (Chapter 1, Paragraph 4).
-- **Supporting Evidence:**
-  > *"03.06.02.06 Classification of designs: a. For the purpose of registration of designs, articles are classified into thirty-one classes and a miscellaneous class 99, as described in The Third Schedule of The Design Rules, 2001. d. The classification of articles under The Third Schedule is based on the International Classification of Industrial Designs according to the Locarno Agreement."*
+
+- **Status:** **Answered with Citations**
+- **Grounded Answer:** Designs are classified for registration into **thirty-one classes** and a miscellaneous class 99 based on the international **Locarno Classification system** (Third Schedule of The Design Rules, 2001).
+- **Citations:** **PDF Page 20** (Chapter 3, Section 03.06.02.06) & **PDF Page 5** (Chapter 1, Paragraph 4).
+
+![Question 2 Screenshot](screenshots/q2_classification_system.png)
 
 ---
 
-### Question 3:
+### Question 3: Government Fee for Trademark (Negative Test)
 > *"What is the government fee to register a trademark?"*
-- **Status:** **Not found** (Crucial Negative Test)
+
+- **Status:** **Not found** (Crucial Negative Test Passed)
 - **Explanation:** The uploaded manual is the *Manual of Designs Practice & Procedure* which governs industrial designs under the Designs Act, 2000. It mentions trademarks only under definition exclusions (Section 2(d) & Section 2(zb) of Trade Marks Act 1999). It contains no evidence or provisions regarding trademark registration fees. The system correctly returns **"Not found"**.
 
+![Question 3 Screenshot](screenshots/q3_trademark_fee_negative_test.png)
+
 ---
 
-### Question 4:
+### Question 4: Current Controller General of Patents (Temporal Negative Test)
 > *"Who is the current Controller General of Patents?"*
-- **Status:** **Not found** (Temporal Negative Test)
-- **Explanation:** The uploaded manual was published during the tenure of a past Controller General (P.H. Kurian, cited on page 4). The manual does not establish who the *current* officeholder is today. As per system instructions, outdated documents must not be used to assert current facts. The system strictly returns **"Not found"**.
+
+- **Status:** **Not found** (Temporal Negative Test Passed)
+- **Explanation:** The uploaded manual was published during the tenure of a past Controller General (P.H. Kurian, cited on page 4). The manual does not establish who the *current* officeholder is today. Outdated documents must not be used to assert current facts. The system strictly returns **"Not found"**.
+
+![Question 4 Screenshot](screenshots/q4_current_controller_negative_test.png)
 
 ---
 
-### Question 5:
+### Question 5: Fee to Register a Design
 > *"What is the fee to register a design?"*
+
 - **Status:** **Not found** (Exact Amount) / Procedural Citation Available
 - **Explanation:** Section 03.08 on **PDF Page 22** specifies that fees are prescribed in the *First Schedule of The Design Rules, 2001* (payable in cash, electronic means, bank draft, or cheque). However, the manual itself does not reproduce the numerical fee table. Because the exact rupee fee amount is not stated in the manual, the assistant refrains from guessing and returns **"Not found"** while citing the relevant procedural excerpt on Page 22.
+
+![Question 5 Screenshot](screenshots/q5_design_registration_fee.png)
+
+---
+
+### Question 6: Out-of-Domain Negative Test (Virat Kohli Cricket Query)
+> *"how much runs virat kohli scores today vs westinidies"*
+
+- **Status:** **Not found** (Strict Out-of-Domain Filter Passed)
+- **Explanation:** The query has zero relevance to Indian Industrial Designs Law. The distance threshold automatically rejects the query and returns **"Not found"** without invoking the LLM.
+
+![Question 6 Screenshot](screenshots/q6_virat_kohli_out_of_domain.png)
 
 ---
 
 ## 15. How Source Citations Work
 
 Every response card in the UI displays:
-1. **Primary Citation Badges:** PDF Page Number (e.g., `PDF Page 36`), Chapter Name, and Section code.
+1. **Primary Citation Badges:** PDF Page Number (e.g., `📄 PDF Page 36`), Chapter Name (`📚 Chapter 6`), and Section code (`⚖️ Section 06.04`).
 2. **Statutory Reference:** Specific Sections of the Designs Act, 2000 and Rules of the Design Rules, 2001.
-3. **Expandable Source Excerpts Accordion:** Contains the verbatim text chunk retrieved from the PDF, along with the calculated similarity score and cosine distance.
+3. **Expandable Source Excerpts Accordion:** Contains the verbatim text chunk retrieved from the PDF, along with the calculated similarity match percentage (e.g. `94.2% Match`) and cosine distance.
 
 ---
 
@@ -330,30 +396,18 @@ All 9 tests pass with `OK`.
 
 ## 19. How to Upload the Project to GitHub
 
-1. Initialize git and configure user if not already set:
-   ```bash
-   git init
-   ```
+```bash
+# Link repository
+git remote add origin https://github.com/Mani7527/GEN_AI_EXAM-PROJECT2-.git
 
-2. Check git status to ensure `.env` and `chroma_db/chroma.sqlite3` are ignored:
-   ```bash
-   git status
-   ```
+# Stage and commit
+git add .
+git commit -m "feat: complete Designs Law Assistant RAG app with screenshots and tests"
 
-3. Stage and commit the project files:
-   ```bash
-   git add .
-   git commit -m "feat: complete Designs Law Assistant RAG application with ChromaDB and Gemini"
-   ```
-
-4. Create a new repository on GitHub (e.g. `designs-law-assistant`).
-
-5. Push to GitHub:
-   ```bash
-   git remote add origin https://github.com/<your-username>/designs-law-assistant.git
-   git branch -M main
-   git push -u origin main
-   ```
+# Push to GitHub
+git branch -M main
+git push -u origin main
+```
 
 ---
 
@@ -362,7 +416,7 @@ All 9 tests pass with `OK`.
 ### Option A: Streamlit Community Cloud (Free & Recommended)
 1. Push your repository to GitHub.
 2. Go to [share.streamlit.io](https://share.streamlit.io/) and log in with GitHub.
-3. Select your repository, branch (`main`), and set the main file path to `app.py`.
+3. Select your repository (`Mani7527/GEN_AI_EXAM-PROJECT2-`), branch (`main`), and set the main file path to `app.py`.
 4. Under **Advanced Settings** -> **Secrets**, add:
    ```toml
    GOOGLE_API_KEY = "your_google_api_key_here"
