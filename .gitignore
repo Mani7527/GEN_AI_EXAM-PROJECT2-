@@ -1,0 +1,21 @@
+# Environment variables and secrets
+.env
+*.env
+
+# Python bytecode and virtual environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Vector database storage
+chroma_db/*
+!chroma_db/.gitkeep
+
+# System files and IDE
+.DS_Store
+.idea/
+.vscode/
+*.log
