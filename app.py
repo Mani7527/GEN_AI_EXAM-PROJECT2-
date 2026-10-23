@@ -309,116 +309,112 @@ with st.sidebar:
 
 # Dynamic Theme Injection
 if is_light:
-    THEME_CSS = """
-    <style>
-        .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"], .main, .block-container {
-            background-color: #f8fafc !important;
-            background: #f8fafc !important;
-            background-image: none !important;
-            color: #0f172a !important;
-        }
-        section[data-testid="stSidebar"] {
-            background-color: #ffffff !important;
-            border-right: 1px solid #cbd5e1 !important;
-        }
-        section[data-testid="stSidebar"] * {
-            color: #0f172a !important;
-        }
-        .rag-card {
-            background-color: #ffffff !important;
-            background: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
-        }
-        .rag-card.verified {
-            border-left: 5px solid #0284c7 !important;
-        }
-        .rag-card.not-found-card {
-            border-left: 5px solid #ef4444 !important;
-            background-color: #fef2f2 !important;
-        }
-        .rag-q-title {
-            color: #0f172a !important;
-        }
-        .rag-ans-body {
-            color: #1e293b !important;
-        }
-        .section-label {
-            color: #0f172a !important;
-        }
-        .sidebar-stat-card {
-            background-color: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        .footer-disclaimer {
-            background-color: #e2e8f0 !important;
-            color: #334155 !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        .badge-chapter {
-            background-color: #e2e8f0 !important;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        .stTextInput input, .stTextArea textarea {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-    </style>
-    """
+    THEME_CSS = """<style>
+.stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"], .main, .block-container {
+    background-color: #f8fafc !important;
+    background: #f8fafc !important;
+    background-image: none !important;
+    color: #0f172a !important;
+}
+section[data-testid="stSidebar"] {
+    background-color: #ffffff !important;
+    border-right: 1px solid #cbd5e1 !important;
+}
+section[data-testid="stSidebar"] * {
+    color: #0f172a !important;
+}
+.rag-card {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+}
+.rag-card.verified {
+    border-left: 5px solid #0284c7 !important;
+}
+.rag-card.not-found-card {
+    border-left: 5px solid #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+.rag-q-title {
+    color: #0f172a !important;
+}
+.rag-ans-body {
+    color: #1e293b !important;
+}
+.section-label {
+    color: #0f172a !important;
+}
+.sidebar-stat-card {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.footer-disclaimer {
+    background-color: #e2e8f0 !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.badge-chapter {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.stTextInput input, .stTextArea textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+</style>"""
 else:
-    THEME_CSS = """
-    <style>
-        .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"] {
-            background-color: #0b1120 !important;
-            background: #0b1120 !important;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(14, 116, 144, 0.18) 0px, transparent 50%) !important;
-            color: #f1f5f9 !important;
-        }
-        section[data-testid="stSidebar"] {
-            background-color: #0f172a !important;
-            border-right: 1px solid rgba(148, 163, 184, 0.12) !important;
-        }
-        .rag-card {
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1px solid rgba(148, 163, 184, 0.12) !important;
-        }
-        .rag-card.verified {
-            border-left: 4px solid #38bdf8 !important;
-        }
-        .rag-card.not-found-card {
-            border-left: 4px solid #ef4444 !important;
-            background: rgba(28, 16, 24, 0.7) !important;
-        }
-        .rag-q-title {
-            color: #f8fafc !important;
-        }
-        .rag-ans-body {
-            color: #cbd5e1 !important;
-        }
-        .section-label {
-            color: #e2e8f0 !important;
-        }
-        .sidebar-stat-card {
-            background: rgba(30, 41, 59, 0.7) !important;
-            border: 1px solid rgba(148, 163, 184, 0.15) !important;
-        }
-        .footer-disclaimer {
-            background: rgba(15, 23, 42, 0.6) !important;
-            color: #64748b !important;
-        }
-        .badge-chapter {
-            background: rgba(148, 163, 184, 0.12) !important;
-            border: 1px solid rgba(148, 163, 184, 0.22) !important;
-            color: #cbd5e1 !important;
-        }
-    </style>
-    """
+    THEME_CSS = """<style>
+.stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stHeader"] {
+    background-color: #0b1120 !important;
+    background: #0b1120 !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(14, 116, 144, 0.18) 0px, transparent 50%) !important;
+    color: #f1f5f9 !important;
+}
+section[data-testid="stSidebar"] {
+    background-color: #0f172a !important;
+    border-right: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+.rag-card {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+.rag-card.verified {
+    border-left: 4px solid #38bdf8 !important;
+}
+.rag-card.not-found-card {
+    border-left: 4px solid #ef4444 !important;
+    background: rgba(28, 16, 24, 0.7) !important;
+}
+.rag-q-title {
+    color: #f8fafc !important;
+}
+.rag-ans-body {
+    color: #cbd5e1 !important;
+}
+.section-label {
+    color: #e2e8f0 !important;
+}
+.sidebar-stat-card {
+    background: rgba(30, 41, 59, 0.7) !important;
+    border: 1px solid rgba(148, 163, 184, 0.15) !important;
+}
+.footer-disclaimer {
+    background: rgba(15, 23, 42, 0.6) !important;
+    color: #64748b !important;
+}
+.badge-chapter {
+    background: rgba(148, 163, 184, 0.12) !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
+    color: #cbd5e1 !important;
+}
+</style>"""
 
-st.markdown(BASE_CSS + THEME_CSS, unsafe_allow_html=True)
+st.markdown(BASE_CSS.strip() + THEME_CSS.strip(), unsafe_allow_html=True)
 
 # Main Hero Header
 st.markdown("""
